@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator">
+        <div class="screen">
+            <div class="result"></div>
+            <div class="operation"></div>
+        </div>
+        <div class="buttons">
+            <div class="btn btn-ac" onclick="document.getElementsByClassName('result')[0].innerHTML = ''">AC</div>
+            <div class="btn btn-C" onclick="document.getElementsByClassName('operation')[0].innerHTML = ''">C</div>
+            <div class="btn btn-/" onclick="document.getElementsByClassName('operation')[0].innerHTML += '/'">/</div>
+            <div class="btn btn-7" onclick="document.getElementsByClassName('operation')[0].innerHTML += '7'">7</div>
+            <div class="btn btn-8" onclick="document.getElementsByClassName('operation')[0].innerHTML += '8'">8</div>
+            <div class="btn btn-9" onclick="document.getElementsByClassName('operation')[0].innerHTML += '9'">9</div>
+            <div class="btn btn-X" onclick="document.getElementsByClassName('operation')[0].innerHTML += '*'">X</div>
+            <div class="btn btn-4" onclick="document.getElementsByClassName('operation')[0].innerHTML += '4'">4</div>
+            <div class="btn btn-5" onclick="document.getElementsByClassName('operation')[0].innerHTML += '5'">5</div>
+            <div class="btn btn-6" onclick="document.getElementsByClassName('operation')[0].innerHTML += '6'">6</div>
+            <div class="btn btn--" onclick="document.getElementsByClassName('operation')[0].innerHTML += '-'">-</div>
+            <div class="btn btn-1" onclick="document.getElementsByClassName('operation')[0].innerHTML += '1'">1</div>
+            <div class="btn btn-2" onclick="document.getElementsByClassName('operation')[0].innerHTML += '2'">2</div>
+            <div class="btn btn-3" onclick="document.getElementsByClassName('operation')[0].innerHTML += '3'">3</div>
+            <div class="btn btn-+" onclick="document.getElementsByClassName('operation')[0].innerHTML += '+'">+</div>
+            <div class="btn btn-0" onclick="document.getElementsByClassName('operation')[0].innerHTML += '0'">0</div>
+            <div class="btn btn-." onclick="document.getElementsByClassName('operation')[0].innerHTML += '.'">.</div>
+            <div class="btn btn-=" onclick="result()">=</div>
+        </div>
+    </div>
+    <script>
+
+        function result(){
+
+            let x =  eval(document.getElementsByClassName('operation')[0].innerHTML)
+
+            if((x.toFixed(5)).toString().endsWith('00000')){
+                document.getElementsByClassName('result')[0].innerHTML = x
+            }
+            else{
+                document.getElementsByClassName('result')[0].innerHTML = x.toFixed(5)
+            }
+
+             
+        }
+
+        
+    </script>
+</body>
+</html>
