@@ -5,7 +5,7 @@
 }
 @font-face{
     font-family: digital;
-    src: url(https://github.com/emreozturanli/Calculator-HTML-CSS-JS/blob/master/digital-7.regular.ttf);
+    src: url(/digital-7.regular.ttf);
 }
 
 body{
