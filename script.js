@@ -2,7 +2,7 @@
 const result = document.querySelector('.result');
 const operation = document.querySelector('.operation');
 const buttons = document.querySelector('.buttons');
-const operators = ['+','-','*','/','.'];
+const operators = ['+','-','*','/'];
 
 buttons.addEventListener('click', (e)=>{
 
@@ -12,86 +12,90 @@ buttons.addEventListener('click', (e)=>{
         null
     }
     else{
-         if (newInput == 'AC'){
+        if (newInput == 'AC'){
         result.innerText = '';
         }
         else if (newInput == 'C'){
             operation.innerText = '';
         }                                                
         else if (newInput == '='){
-            syntaxCheck();
-            if(eval(operation.innerText).toString().includes('.')) {
-                if(eval(operation.innerText).toString().slice(eval(operation.innerText).toString().indexOf('.')+1).length >4){
-                result.innerText = eval(operation.innerText).toFixed(4);
+            let subResult;
+            if(operation.innerText.includes('+')){
+               subResult = operation.innerText.split('+').map((i)=> +i).reduce((a,b)=> a+b)
+            }
+            else if(operation.innerText.includes('/')){
+
+                subResult = operation.innerText.split('/').map((i)=> +i).reduce((a,b)=> a/b)
+            }
+            else if(operation.innerText.includes('*')){
+                subResult = operation.innerText.split('*').map((i)=> +i).reduce((a,b)=> a*b)
+            }
+            else if(operation.innerText.includes('-')){
+                if(operation.innerText.indexOf('-') == operation.innerText.lastIndexOf('-')){
+                    subResult = operation.innerText.split('-').map((i)=> +i).reduce((a,b)=> a-b)
+                }else{
+                    if(operation.innerText.includes('--')){
+                        subResult = operation.innerText.split('--').map((i)=> +i).reduce((a,b)=> a+b)
+                    }
+                    else{
+                        subResult = operation.innerText.slice(1).split('-').map((i)=> +i).reduce((a,b)=> -(a+b))
+                    }
                 }
-                else{
-                    result.innerText = eval(operation.innerText);
-                }       
-            } 
+            }
+            if(subResult.toString().includes('.')){
+                if(subResult.toString().slice(subResult.toString().indexOf('.')+1).length >4){
+                    result.innerText = subResult.toFixed(4);
+                    }
+                    else{
+                        result.innerText = subResult;
+                    } 
+            }
             else{
-                result.innerText = eval(operation.innerText);
-            }                              
-           
+                result.innerText = subResult;
+            }
+            operation.innerText = result.innerText
         }
-        
-
         else{ 
-            
-            let lastNum = operation.innerText.charAt(operation.innerText.length - 1);
-                
-            if((operators.includes(lastNum) && operators.includes(newInput)) 
-
-            || 
-            
-            ((newInput == '.') && operation.innerText.lastIndexOf('.') > operation.innerText.lastIndexOf('+'))
-            &&
-            (newInput == '.') && operation.innerText.lastIndexOf('.') > operation.innerText.lastIndexOf('-')
-            &&
-            (newInput == '.') && operation.innerText.lastIndexOf('.') > operation.innerText.lastIndexOf('/')
-            &&
-            (newInput == '.') && operation.innerText.lastIndexOf('.') > operation.innerText.lastIndexOf('*'))
-            
-            
-            {
+            if(operation.innerText.split('').some((i)=> ['+','*','/'].includes(i)) && ['+','*','/','-'].includes(newInput) ){
+                null
+            }
+            else if((!operation.innerText.startsWith('-') && operation.innerText.split('-').length ==2) && ['+','*','/','-'].includes(newInput)){
+                null
+            }
+            else if((operation.innerText.startsWith('-') && operation.innerText.split('-').length ==3) && ['+','*','/','-'].includes(newInput)){
+                null
+            }
+            else if((operation.innerText.includes('--') && (operation.innerText.split('--').length <=3)) && ['+','*','/','-'].includes(newInput)){
+                null
+            }
+            else if(operation.innerText.endsWith('-') && ['+','*','/','.'].includes(newInput)){
+                null
+            }
+            else if(operation.innerText.startsWith('-') && operation.innerText.length == 1 && operators.includes(newInput)){
+                null
+            }
+            else if((operation.innerText.endsWith('-') && operation.innerText.charAt(operation.innerText.length - 2) == '-') && operators.includes(newInput) ){
                 null
             }
             else{
-            
-                if(operation.innerText == '0' && operators.includes(newInput) ){
-                operation.innerText += newInput; 
-            }
+                if(operation.innerText == '0' && ['+','-','*','/','.'].includes(newInput) ){
+                    operation.innerText += newInput; 
+                }
+                else if(operation.innerText == '' && ['+','*','/','.'].includes(newInput)){
+                    null
+                }
+                else if(operation.innerText == '' && newInput == '-'){
+                    operation.innerText += newInput;
+                }
                 else if (operation.innerText != '0'){
-                operation.innerText += newInput;
-            }
+                    operation.innerText += newInput;
+                }
                 else if(operation.innerText == '0' && !operators.includes(newInput)){
-                operation.innerText = newInput;
-            }
-
+                    operation.innerText = newInput;
+                }       
             }
         }
 }  
-
-
-function syntaxCheck(){  
-    if(operators.filter((operator)=> operation.innerText.endsWith(operator)).length > 0){
-        result.style.fontSize = '2rem';
-        result.innerText = 'Syntax error!!!';
-    }
-
-    if(['*','/','.'].filter((operator)=> operation.innerText.startsWith(operator)).length > 0){
-        result.style.fontSize = '2rem';
-        result.innerText = 'Syntax error!!!';
-    }
-}
-
 })
 
 
-
-// boşken 0 dan sonrasını alma          son else içinde hallettim
-// sonunda operatör kalınca napacaz.    syntaxCheck
-// ilk karakter operatör olmasın        syntaxCheck
-// +-*. yanyana olmasın  son else içinde hallettik
-
-
-// - olunca parantez  ????????
